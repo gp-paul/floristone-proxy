@@ -1,0 +1,38 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Florist One Proxy Demo</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+      pre { background: #f6f8fa; padding: 1rem; border-radius: 8px; overflow:auto; }
+      button { padding: 0.7rem 1rem; border: 0; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+    </style>
+  </head>
+  <body>
+    <h1>Florist One Proxy Demo</h1>
+    <p>This page calls the proxy's <code>/categories?api=flowershop</code> endpoint.</p>
+    <button id="btn">Fetch categories</button>
+    <pre id="out">Click the button...</pre>
+    <script>
+      const PROXY = (location.origin.endsWith(".vercel.app") || location.hostname !== "localhost")
+        ? `${location.origin}/floristone`
+        : `${location.origin}/api/floristone`;
+
+      document.getElementById("btn").addEventListener("click", async () => {
+        const out = document.getElementById("out");
+        out.textContent = "Loading...";
+        try {
+          const res = await fetch(`${PROXY}/categories?api=flowershop`, { headers: { "Accept": "application/json" }});
+          const ct = res.headers.get("content-type") || "";
+          const txt = await res.text();
+          out.textContent = ct.includes("application/json") ? JSON.stringify(JSON.parse(txt), null, 2) : txt;
+        } catch (e) {
+          out.textContent = "Error: " + e;
+        }
+      });
+    </script>
+  </body>
+</html>

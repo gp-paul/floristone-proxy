@@ -1,0 +1,10 @@
+{
+  "name": "floristone-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy --prebuilt",
+    "start": "vercel dev"
+  }
+}
